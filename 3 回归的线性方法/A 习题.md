@@ -92,3 +92,74 @@
       \hat\beta_k=\frac{<z_k,y>}{<z_k,z_l>}-\sum_{j=k+1}^p\gamma_{kj}\hat\beta_j)
       $$
       
+
+## Ex 3.11
+
+* 题目：![1614357137561](assets/1614357137561.png)
+
+* 第一问：
+  * 解法1:
+    * $RSS$ 的公式可以转化为非加权的情况
+      $$
+    RSS(B;Z)=\sum_{i=1}^N(y_i-f(x_i))^T\Sigma^{-1}(y_i-f(x_i))
+    \\=tr[(Y-XB)\Sigma^{-1}(Y-XB)^T]\because 矩阵分块
+    \\=tr[(Y-XB){\Sigma^{-1/2}}^T\Sigma^{-1/2}(Y-XB)^T]\because 协方差矩阵特征值分解
+    \\=tr[(Y{\Sigma^{-1/2}}^T-XB{\Sigma^{-1/2}}^T)(Y{\Sigma^{-1/2}}^T-XB{\Sigma^{-1/2}}^T)^T]
+      $$
+    * 然后根据原来非加权求解公式
+      $$
+      \hat B=(X^TX)^{-1}X^TY
+      $$
+    * 可得
+      $$
+    \hat B{\Sigma^{-1/2}}^T=(X^TX)^{-1}X^TY{\Sigma^{-1/2}}^T\\
+    \hat B=(X^TX)^{-1}X^TY
+      $$
+
+  * 解法2:
+
+    * $RSS$公式可以看作
+      $$
+      RSS(B;Z)=\sum_{i=1}^N(y_i-f(x_i))^T\Sigma^{-1}(y_i-f(x_i))
+      \\ =tr[(Y-XB)\Sigma^{-1}(Y-XB)^T]\because 矩阵分块
+      $$
+
+    * 求微分
+      $$
+      dRSS=tr((-XdB)\Sigma^{-1}(Y-XB)^T+(Y-XB)\Sigma^{-1}(-XdB)^T)
+      \\ =tr(\Sigma^{-1}(Y-XB)^T(-XdB)+(-XdB)^T(Y-XB)\Sigma^{-1})
+      \\ =tr(\Sigma^{-1}(Y-XB)^T(-XdB)+\Sigma^{-1}(Y-XB)^T(-XdB))
+      \\ =tr(-2(X^T(Y-XB)\Sigma^{-1})^TdB)
+      $$
+
+    * 可以得出导数为
+      $$
+      \frac{\part RSS}{\part B}=-2(X^T(Y-XB)\Sigma^{-1}) =0
+      \\ \rightarrow X^T(Y-XB)\Sigma^{-1}=0
+      \\ \rightarrow X^T(Y-XB)=0\ \because \Sigma^{-1} 可逆
+      \\ \rightarrow B=(X^TX)^{-1}X^TY
+      $$
+      
+
+* 第二问(TODO)：
+  * 对公式进行变换得到，其中$\otimes$是$kronecker$积
+    $$
+    RSS(B;Z)=\sum_{i=1}^N(y_i-f(x_i))^T\Sigma_i^{-1}(y_i-f(x_i))
+    \\=tr((I_{kk}\otimes(Y-XB))\left(
+    \begin{matrix}
+    \Sigma_1^{-1} & 0 & 0 & \dots & 0\\
+    0 & \Sigma_2^{-1} & 0 & \dots & 0\\
+    0 & 0 & \Sigma_3^{-1} & \dots & 0\\
+    0 & 0 & 0 & \ddots & \vdots\\
+    0 & 0 & 0 & 0 & \Sigma_k^{-1}\\
+    \end{matrix}
+    \right) (I_{kk}\otimes(Y-XB))^T)
+    \\=tr((I_{kk}\otimes(Y-XB))Diag(\Sigma, k)(I_{kk}\otimes(Y-XB))^T)\ \because 记中间矩阵为Diag(\Sigma, k)
+    $$
+
+  * 求微分
+    $$
+    dRSS=tr(d(I_{kk}\otimes(Y-XB))Diag(\Sigma, k)(I_{kk}\otimes(Y-XB))^T)
+    $$
+    
+
