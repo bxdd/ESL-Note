@@ -93,6 +93,24 @@
       $$
       
 
+## Ex 3.9
+
+* 题目：
+
+  ![1614447668026](assets/1614447668026.png)
+
+* 解(TODO)：
+
+  
+
+
+
+## Ex 3.10
+
+* 题目：![1614447879243](assets/1614447879243.png)
+
+* 解(TODO)：
+
 ## Ex 3.11
 
 * 题目：![1614357137561](assets/1614357137561.png)
@@ -142,24 +160,104 @@
       
 
 * 第二问(TODO)：
-  * 对公式进行变换得到，其中$\otimes$是$kronecker$积
+
+  * 定义：
+
+    * 矩阵向量化$Vec$运算符
+      $$
+      Vec(X) = [X_{11},...,X_{m1}, X_{12},...,X_{m2}, ...., X_1n,...,X_{mn}]^T
+      $$
+
+    * $K_{mn}​$ 是交换矩阵,将按列优先的向量化变为按行优先的向量化，例如
+      $$
+      Vec(A^T)=K_{mn}Vec(A)\\
+      
+      \\K_{23} =
+      \left[
+      \begin{matrix}
+      1 & 0 & 0 & 0 & 0 & 0\\
+      0 & 0 & 1 & 0 & 0 & 0\\
+      0 & 0 & 0 & 0 & 1 & 0\\
+      0 & 1 & 0 & 0 & 0 & 0\\
+      0 & 0 & 0 & 1 & 0 & 0\\
+      0 & 0 & 0 & 0 & 0 & 1
+      \end{matrix}
+      
+      \right]
+      ,
+      Vec(A^T) = 
+      \left[
+      \begin{matrix}
+      A_{11} \\ A_{12} \\ A_{13} \\
+      A_{21} \\ A_{22} \\ A_{23}
+      \end{matrix}
+      \right]
+      ,
+      Vec(A) = 
+      \left[
+      \begin{matrix}
+      A_{11} \\ A_{21} \\ A_{12} \\
+      A_{22} \\ A_{13} \\ A_{23}
+      \end{matrix}
+      \right]
+      $$
+      且有$K_{mn} = K_{nm}^T, K_{mn}K_{nm} = I$
+
+    * $\otimes$是$kronecker$积
+
+  * 对公式进行变换得到
     $$
     RSS(B;Z)=\sum_{i=1}^N(y_i-f(x_i))^T\Sigma_i^{-1}(y_i-f(x_i))
-    \\=tr((I_{kk}\otimes(Y-XB))\left(
+    \\=Vec((Y-XB)^T)^T\left(
     \begin{matrix}
     \Sigma_1^{-1} & 0 & 0 & \dots & 0\\
     0 & \Sigma_2^{-1} & 0 & \dots & 0\\
     0 & 0 & \Sigma_3^{-1} & \dots & 0\\
     0 & 0 & 0 & \ddots & \vdots\\
-    0 & 0 & 0 & 0 & \Sigma_k^{-1}\\
+    0 & 0 & 0 & 0 & \Sigma_N^{-1}\\
     \end{matrix}
-    \right) (I_{kk}\otimes(Y-XB))^T)
-    \\=tr((I_{kk}\otimes(Y-XB))Diag(\Sigma, k)(I_{kk}\otimes(Y-XB))^T)\ \because 记中间矩阵为Diag(\Sigma, k)
+    \right) Vec((Y-XB)^T)
+    \\=[K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]^T
+    \\ diag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1})
+    \\ [K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]
     $$
 
   * 求微分
     $$
-    dRSS=tr(d(I_{kk}\otimes(Y-XB))Diag(\Sigma, k)(I_{kk}\otimes(Y-XB))^T)
+    dRSS=d([K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]^Tdiag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1}) \\ [K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)])
+    
+    \\=[-K_{Nk}(I_k\otimes X)dVec(B)]^Tdiag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1}) \\ [K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]
+    \\+[K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]^T diag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1})\\ [-K_{Nk}(I_k\otimes X)dVec(B)]
+    \\=-2[K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]^Tdiag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1})\\K_{Nk}(I_k\otimes X)dVec(B)
+    \\=[-2(I_k\otimes X^T)K_{kN}diag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1})[K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]]^T\\dVec(B)
     $$
+
+  * 可得
+    $$
+    \frac{\part RSS}{\part Vec(B)}
+    \\=-2(I_k\otimes X^T)K_{kN}diag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1})[K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]=0
+    \\ \rightarrow -2(I_k\otimes X^T)K_{kN}diag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1})K_{Nk}[Vec(Y)-(I_k\otimes X)Vec(B)]=0
+    $$
+
+  * 由于$(I_k\otimes X^T)$是行满秩，而列不满秩，且列秩和行秩均为为$kp$，因此$-2(I_k\otimes X^T)K_{kN}diag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1})K_{Nk}$的秩也为$kp $
+
+  * 因此，$Vec(Y)-(I_k\otimes X)Vec(B)$有$kN-kp$个线性无关的非0解，则解空间$S$可以表示为($c_i​$是解空间基向量)
+    $$
+    S=
+    \{x|x=\sum_{i=1}^{kN-kp}k_ic_i\}
+    $$
+
+  * 因此有
+    $$
+    Vec(Y)-(I_k\otimes X)Vec(B)=\sum_{i=1}^{kN-kp}k_ic_i\\
+    (I_k\otimes X)Vec(B)=Vec(Y)-\sum_{i=1}^{kN-kp}k_ic_i\\
+    Vec(B) = ((I_k\otimes X)^T(I_k\otimes X))^{-1}(I_k\otimes X)^T(Vec(Y)-\sum_{i=1}^{kN-kp}k_ic_i)\ \because (I_k\otimes X)列满秩
+    $$
+
+  * 因此可以得出结论，$B​$的最优解有多个
+
     
 
+  
+
+  
