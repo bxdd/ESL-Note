@@ -1,5 +1,105 @@
 # 习题
 
+## Ex 3.1
+
+* 题目：![1614526573910](assets/1614526573910.png)
+
+* 证明：$F\sim F(p_1-p_0,N-p_1-1)$
+  * 首先证明 $\frac{(RSS_0-RSS_1)}{\sigma} \sim \chi_{k}^2​$
+
+    * 假设：设有$k$个变量是约束为0
+
+    * 对模型$\hat\beta_1​$有
+      $$
+          \hat\beta_1 = (X^TX)^{-1}X^Ty
+      $$
+
+    * 设矩阵$W_{kp_1 }$, 有
+
+      $$
+          W_{ij}\in \{0, 1\}\\
+          W行向量相互正交，即WW^T=I_{k}
+      $$
+
+    * 则$RSS​$最小化可以表述为
+      $$
+          RSS(\beta)=(y-X\beta)^T(y-X\beta)\\
+          s.t.\ W\beta=0
+      $$
+
+    * 使用拉格朗日乘子法
+      $$
+          F(\beta,\lambda)=RSS(\beta)+2\lambda^T W\beta\\
+          \frac{\part F}{\part \beta}=2X^T(X\beta - y) +2 W^T\lambda=0\\
+          \frac{\part F}{\part \lambda}=W\beta=0\\
+      $$
+
+    * 求解可得
+      $$
+          \hat\beta_0^TX^T(X\hat\beta_0 - y)=0\\
+          \hat\beta_0^TX^TX\hat\beta_0=\hat\beta_0^TX^Ty\\
+          W(X^TX)^{-1}(X^Ty- W^T\lambda)=0\\
+          \hat \lambda =(W(X^TX)^{-1}W^T)^{-1} W(X^TX)^{-1}X^Ty
+          \\=(W(X^TX)^{-1}W^T)^{-1} W\hat\beta_1\\
+          \hat\beta_0=(X^TX)^{-1}(X^Ty- W^T\lambda)
+          \\ = \hat\beta_1 -(X^TX)^{-1} W^T\hat\lambda
+      $$
+
+    * 对$RSS_0$有
+      $$
+          RSS_0(\beta)=(y-X\hat\beta_0)^T(y-X\hat\beta_0)\\
+          \\=y^Ty-2\hat\beta_0^TX^Ty+\hat\beta_0^TX^TX\hat\beta_0
+          \\ =y^Ty-2\hat\beta_0^TX^TX\hat\beta_0+\hat\beta_0^TX^Ty
+          \\=y^Ty-\hat\beta_0^TX^Ty
+          \\=y^Ty-\hat\beta_1^TX^Ty+\hat\lambda^TW(X^TX)^{-1}X^Ty
+          \\=y^Ty-\hat\beta_1^TX^Ty+\hat\lambda^TW\hat\beta_1
+      $$
+
+    * 对$RSS_1$有
+      $$
+          (X^TX)^{-1}X^Ty\\
+          RSS_1(\beta)=(y-X\hat\beta_1)^T(y-X\hat\beta_1)\\
+          \\=y^Ty-2\hat\beta_1^TX^Ty+\hat\beta_1^TX^TX\hat\beta_1
+          \\=y^Ty-2y^TX(X^TX)^{-1}X^Ty+y^TX(X^TX)^{-1}X^TX(X^TX)^{-1}X^Ty
+          \\=y^Ty-y^TX(X^TX)^{-1}X^Ty
+          \\=y^Ty-\hat\beta_1^TX^Ty
+      $$
+
+    * 因此有
+      $$
+          RSS_0-RSS_1\\
+          =y^Ty-\hat\beta_1^TX^Ty+\hat\lambda^TW\hat\beta_1-(y^Ty-\hat\beta_1^TX^Ty)
+          \\=\hat\lambda^TW\hat\beta_1=(W\hat\beta_1)^T\hat\lambda
+          \\=(W\hat\beta_1)^T(W(X^TX)^{-1}W^T)^{-1} W\hat\beta_1 
+          \\=[(W(X^TX)^{-1}W^T)^{-1/2} W\hat\beta_1]^T[(W(X^TX)^{-1}W^T)^{-1/2} W\hat\beta_1]
+      $$
+
+    * 则
+      $$
+      \frac{RSS_0-RSS_1}{\sigma^2}\\=
+          [\frac{(W(X^TX)^{-1}W^T)^{-1/2} W\hat\beta_1}{\sigma}]^T[\frac{(W(X^TX)^{-1}W^T)^{-1/2} W\hat\beta_1}{\sigma}]
+          \\ \sim \chi_{k}^2 \ \because (W(X^TX)^{-1}\sigma^2W^T)^{-1/2} W\hat\beta_1 \sim N(\mathbf{0},\mathbf{1})
+      $$
+
+  * 由于$k=1$,有($w$是列向量，且$w_j=1$, 其他全是0)
+    $$
+    \frac{RSS_0-RSS_1}{\sigma^2}/1\\= [\frac{(w^T(X^TX)^{-1}w)^{-1/2} w^T\hat\beta_1}{\sigma}]^T[\frac{(w(X^TX)^{-1}w^T)^{-1/2} w\hat\beta_1}{\sigma}]
+    \\=[\frac{\hat\beta_{1,j}}{\sqrt{v_j}\sigma}]^2\ \because v_j 是 (X^TX)^{-1}第j个对角元
+    \\
+    \frac{RSS_1}{\sigma^2}/(N-p_1-1)=\frac{\hat\sigma^2}{\sigma^2}
+    $$
+    
+
+  * 因此有
+    $$
+    F=\frac{\frac{RSS_0-RSS_1}{\sigma^2}/1}{\frac{RSS_1}
+    {\sigma^2}/(N-p_1-1)}
+    \\=\frac{[\frac{\hat\beta_{1,j}}{\sqrt{v_j}\sigma}]^2}{\frac{\hat\sigma^2}{\sigma^2}}
+    \\=(\frac{\beta_{1,j}}{\sqrt{v_j}\sigma})^2=Z^2
+    $$
+    
+
+
 ## Ex 3.3
 
 * 题目：![1614261278690](assets/1614261278690.png)
@@ -99,21 +199,83 @@
 
   ![1614447668026](assets/1614447668026.png)
 
-* 解(TODO)：
+* 解：
 
-  
+  * 定义
+    * 记$X_1$的第$j$列为$X_j$
+    * 记${X_2}$的第$j$列为$X_{q+j}$
+    * 记$Q$为$(u_1,u_2,...,u_q)$
 
+  * 求解：
 
+    * 因为$X_1$可以进行$QR$分解
+      $$
+      X_1=QR
+      $$
+
+    * 当新加入变量$X_{q+j}$
+      $$
+      X_*=[X,x_{q+j}]\\
+      z_{q+j}=x_{q+j}-\sum_{i=1}^q Proj_{u_i}(x_{q+j})\\
+      =x_{q+j}-\sum_{i=1}^qu_i<u_i, x_{q+j}>\\
+      =x_{q+j}-\sum_{i=1}^qu_iu_i^Tx_{q+j}\\
+      =(I-QQ^T)x_{q+j}\\
+      
+      Q_*=(Q,u_{q+j}=\frac{z_{q+j}}{\|z_{q+j}\|})
+      $$
+
+    * 因此
+      $$
+      \hat y=QQ^Ty\\
+      \hat y_*=Q_*Q_*^Ty\\
+      =(Q,u_{q+j})(Q,u_{q+j})^Ty\\
+      =(QQ^T+u_{q+j}u_{q+j}^T)y\\
+      \\ = \hat y + u_{q+j}u_{q+j}^Ty
+      $$
+
+    * 计算残差可以得到
+      $$
+      r_*=\hat y+u_{q+j}u_{q+j}^Ty-y\\
+      = r+u_{q+j}u_{q+j}^Ty\\
+      r_*^Tr_*=(r+u_{q+j}u_{q+j}^Ty)^T(r+u_{q+j}u_{q+j}^Ty)\\
+      =r^Tr+y^Tu_{q+j}u_{q+j}^Tr+ru_{q+j}u_{q+j}^Ty+y^Tu_{q+j}u_{q+j}^Tu_{q+j}u_{q+j}^Ty\\
+      =r^Tr+y^Tu_{q+j}u_{q+j}^Tr+r^Tu_{q+j}u_{q+j}^Ty+y^Tu_{q+j}u_{q+j}^Ty
+      \\ = r^Tr+2r^Tu_{q+j}u_{q+j}^Ty+y^Tu_{q+j}u_{q+j}^Ty
+      \\ = r^Tr+(2r+y)^Tu_{q+j}u_{q+j}^Ty
+      $$
+
+    * 因此只需要最小化
+      $$
+      S=(2r+y)^Tu_{q+j}u_{q+j}^Ty
+      \\ =\frac{（2r+y)^T(I-QQ^T)x_{q+j}x_{q+j}^T(I-QQ^T)y}{\|(I-QQ^T)x_{q+j}\|}
+      \\ = \frac{y^T(3I-QQ^T)(I-QQ^T)x_{q+j}x_{q+j}^T(I-QQ^T)y}{\|(I-QQ^T)x_{q+j}\|}
+      \\ =  \frac{y^T(3I-QQ^T-3QQ^T+QQ^T)x_{q+j}x_{q+j}^T(I-QQ^T)y}{\|(I-QQ^T)x_{q+j}\|}
+      \\ = 3\frac{y^T(I-QQ^T)x_{q+j}x_{q+j}^T(I-QQ^T)y}{x_{q+j}^T(I-QQ^T)(I-QQ^T)x_{q+j}}
+      \\ = 3\frac{\|r^Tx_{q+j}\|}{x_{q+j}^T(I-QQ^T)x_{q+j}}
+      $$
+
+    * 可得
+      $$
+      j_*=\arg\min_{j} \frac{\|r^Tx_{q+j}\|}{x_{q+j}^T(I-QQ^T)x_{q+j}}
+      $$
+      
 
 ## Ex 3.10
 
 * 题目：![1614447879243](assets/1614447879243.png)
 
-* 解(TODO)：
+  ![1614529174570](assets/1614529174570.png)
+
+* 解：
+
+  * 先去掉gleason，因为他的显著性水平最低
+  * 然后重新计算Z score，不断循环
 
 ## Ex 3.11
 
 * 题目：![1614357137561](assets/1614357137561.png)
+
+* 
 
 * 第一问：
   * 解法1:
