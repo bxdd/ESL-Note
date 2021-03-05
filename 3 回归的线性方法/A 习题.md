@@ -282,6 +282,8 @@
 
 * 解：
 
+  * 假设这里的$X$都经过中心化，$\mathbf{y}$也是经过了使用$\beta_0=\bar{\mathbf{y}} $后，进行中心化的$\mathbf{y}=\mathbf{y}-\beta_0$
+
   * 由后验概率公式，可得
     $$
     P(\beta|y) = \frac{P(\beta,y)}{P(y)} = \frac{P(y|\beta)P(\beta)}{P(y)}  \sim P(y|\beta)P(\beta) \\=\frac{1}{\sqrt{(2\pi\sigma^2)^{N}}}\exp(-\frac{(y-X\beta)^T(y-X\beta)}{2\sigma^2})\times \frac{1}{\sqrt{(2\pi\tau)^{N}}}\exp(-\frac{\beta^T\beta}{2\tau})\\
