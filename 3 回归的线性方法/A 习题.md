@@ -272,11 +272,35 @@
       \beta_0=\beta_0^c-\bar {\mathbf{x}}^T\beta^c_{1:p}\\
       \beta_{1:p}=\beta^c_{1:p}
       $$
-      
 
       
 
-       
+
+## Ex 3.6
+
+* 题目：![1614948439576](assets/1614948439576.png)
+
+* 解：
+
+  * 由后验概率公式，可得
+    $$
+    P(\beta|y) = \frac{P(\beta,y)}{P(y)} = \frac{P(y|\beta)P(\beta)}{P(y)}  \sim P(y|\beta)P(\beta) \\=\frac{1}{\sqrt{(2\pi\sigma^2)^{N}}}\exp(-\frac{(y-X\beta)^T(y-X\beta)}{2\sigma^2})\times \frac{1}{\sqrt{(2\pi\tau)^{N}}}\exp(-\frac{\beta^T\beta}{2\tau})\\
+    =C\exp(-\frac{1}{2\sigma^2}((y-X\beta)^T(y-X\beta)+\frac{\sigma^2}{\tau}\beta^T\beta))
+    $$
+
+  * 取对数可得
+    $$
+    log(P(\beta|y))=\log(C)-\frac{1}{2\sigma^2}((y-X\beta)^T(y-X\beta)+\frac{\sigma^2}{\tau}\beta^T\beta)
+    $$
+
+  * 可以看到
+    $$
+    \lambda=\frac{\sigma^2}{\tau}\\
+    $$
+
+  * 且岭回归估计是后验分布的众数、或者均值
+
+    这是因为高斯分布共轭分布仍然是高斯分布，众数和中位数均相等
 
 ## Ex 3.9
 
