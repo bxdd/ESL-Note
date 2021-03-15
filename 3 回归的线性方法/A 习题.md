@@ -304,6 +304,68 @@
 
     这是因为高斯分布共轭分布仍然是高斯分布，众数和中位数均相等
 
+ ## Ex 3.8
+
+* 题目：![1615804040716](assets/1615804040716.png)
+
+* 求解：
+  * 第一问：均张成$\tilde X​$列空间
+
+    * 根据Thin-SVD可得，$U​$是$\tilde X​$列空间的正交基
+
+    * 由QR分解得
+      $$
+    X=QR\\
+    =(\frac{\mathbf{1}}{\sqrt{N}}, Q_2)
+    \left(
+    \begin{matrix}
+    R_{1,1:p}\\
+    [0, R_{2:p,2:p}]
+    \end{matrix}
+    \right)
+    \\ = \frac{\mathbf{1}R_{1,1:p}}{\sqrt{N}}+Q_2[0, R_{2:p,2:p}]
+      $$
+
+    * 由于
+      $$
+    R_{1,1:p}=(\sqrt{N}, \frac{<x_{1},\frac{\mathbf{1}}{\sqrt{N}}>}{<\frac{\mathbf{1}}{\sqrt{N}},\frac{\mathbf{1}}{\sqrt{N}}>}, \frac{<x_{2},\frac{\mathbf{1}}{\sqrt{N}}>}{<\frac{\mathbf{1}}{\sqrt{N}},\frac{\mathbf{1}}{\sqrt{N}}>},\dotsm,\frac{<x_{p},\frac{\mathbf{1}}{\sqrt{N}}>}{<\frac{\mathbf{1}}{\sqrt{N}},\frac{\mathbf{1}}{\sqrt{N}}>})\\
+    =\sqrt{N}(1,\bar x_1,\bar x_2,\dotsm, \bar x_{p})\\
+    =\sqrt{N} \bar{\mathbf{x}}^T
+      $$
+
+    * 因此有
+      $$
+    X-\mathbf{1}\bar{\mathbf{x}}^T=Q_2[0, R_{2:p,2:p}]\\
+    \rightarrow [0, \tilde  X]=[0, Q_2R_{2:p,2:p}]\\
+    \rightarrow \tilde  X = Q_2R_{2:p,2:p}
+      $$
+
+    * 由此可见，$Q_2$和$U$都是$\tilde X$列空间的正交基，均张成$\tilde X$的列空间
+
+  * 第二问：什么条件下$Q_2$和$U$相等
+    * 由SVD
+      $$
+    \tilde X = UD V^T
+      $$
+
+    * 若$Q_2 = \pm U$, 则
+      $$
+    R_{2:p,2:p}=\pm DV^T
+      $$
+
+    * 因此$R_{2:p,2:p}$ 是正交阵，且是对角元素不为0的上三角阵，则$R_{2:p,2:p}$必定是对角阵
+
+      证明：对角元素不为0的上三角阵$M$，若$M$正交，则必定是对角阵
+
+      * 记$M=\{v_1,v_2,\dotsm,v_p\}$
+      * 由$<v_1, v_i>=0, i>1$, 可以得到$v_i, i > 1​$的第一行是0
+      * 由$<v_2, v_i>=0, i>1$, 可以得到$v_i, i > 2$的第二行是0
+      * 以此类推，$M$是对角阵
+
+    * 因此得出$\tilde X$ 列向量正交
+
+    
+
 ## Ex 3.9
 
 * 题目：
