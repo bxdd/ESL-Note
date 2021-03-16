@@ -202,7 +202,7 @@
 
     * 对于$X$是中心化的情况
 
-      * 设$X$是$N*p$维，每一行都是中心化后$\mathbf{x}$的矩阵
+      * 设$X$是$N*p$维，每一行都是中心化后$\mathbf{x}​$的矩阵
 
       * 上式可以写作
         $$
@@ -239,14 +239,14 @@
       \\ \rightarrow \beta_0^c = \frac{\sum_{i=1}^N y_i}{N}
         $$
 
-      * 由式$\eqref{eq1}$  $\eqref{eq2}​$， 可得
+      * 由式$\eqref{eq1}​$  $\eqref{eq2}​$， 可得
         $$
       X^T(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})-\lambda {\beta^c_{1:p}}
       \\ = X^T(y-\bar y-X\beta^c_{1:p})-\lambda {\beta^c_{1:p}}=0
       \\ \rightarrow \beta^c_{1:p}=(X^TX+\lambda I)^{-1}X^T(y-\bar y)
         $$
 
-    * 而对于$X$是未中心化的情况(即书中3.41情况)
+    * 而对于$X​$是未中心化的情况(即书中3.41情况)
 
       * 由式 $\eqref{eq1}$， 可得
         $$
@@ -273,8 +273,75 @@
       \beta_{1:p}=\beta^c_{1:p}
       $$
 
-      
+  * 对lasso
 
+    * 可以写作
+      $$
+      \hat\beta^c=\arg\min_{\beta^c}\ (y-\beta_0^c-X\beta^c_{1:p})^T(y-\beta_0^c-X\beta^c_{1:p})+\lambda sign({\beta^c_{1:p}})^T\beta^c_{1:p}
+      $$
+
+    * 求导得
+      $$
+      f(\beta_0^c,\beta^c)=(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})^T(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})+\lambda sign({\beta^c_{1:p}})^T\beta^c_{1:p}\\
+      df=(-d\beta_0^c\mathbf{1})^T(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})+(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})^T(-d\beta_0^c\mathbf{1})
+      \\=-2(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})^T(d\beta_0^c\mathbf{1})
+      \\=-2(\mathbf{1}^T(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p}))^T\mathbf{1}d\beta_0^c\\
+      \rightarrow  \frac{\part f}{\part \beta_0^c}=-2\mathbf{1}^T(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})=0\\
+      df=(-Xd\beta^c_{1:p})^T(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})+(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})^T(-Xd\beta^c_{1:p})+\lambda sign({\beta^c_{1:p}})^Td\beta^c_{1:p}
+      \\=-2(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})^TXd\beta^c_{1:p}+\lambda sign({\beta^c_{1:p}})^Td\beta^c_{1:p}
+      \\ = -2(X^T(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})-\frac{\lambda sign({\beta^c_{1:p}})}{2})^Td\beta^c_{1:p}\\
+      \rightarrow  \frac{\part f}{\part \beta^c_{1:p}}=-2(X^T(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})-\frac{\lambda sign({\beta^c_{1:p}})}{2})=0
+      $$
+
+    * 联立二式
+      $$
+      \left\{
+      \begin{align}
+      &\frac{\part f}{\part \beta_0^c}=-2\mathbf{1}^T(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})=0\label{eq3}\\
+      &\frac{\part f}{\part \beta^c_{1:p}}=-2(X^T(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})-\frac{\lambda sign({\beta^c_{1:p}})}{2})=0\label{eq4}\\
+      \end{align}
+      \right.
+      $$
+
+    * 由式 $\eqref{eq3}​$， 可得
+      $$
+      \mathbf{1}^Ty-N\beta_0^c-\mathbf{1}^TX\beta_{1:p}^c
+      \\ = \sum_{i=1}^N y_i - N\beta_0^c - \mathbf{0}^T\beta_{1:p}^c=0
+      \\ \rightarrow \beta_0^c = \frac{\sum_{i=1}^N y_i}{N}
+      $$
+
+    * 由式$\eqref{eq3}$  $\eqref{eq4}​$， 可得
+      $$
+      X^T(y-\beta_0^c\mathbf{1}-X\beta^c_{1:p})-\frac{\lambda sign({\beta^c_{1:p}})}{2}
+      \\ = X^T(y-\bar y-X\beta^c_{1:p})-\frac{\lambda sign({\beta^c_{1:p}})}{2}=0 \label{eq5}
+      $$
+
+    * 而对于$X$是未中心化的情况
+
+      * 由式 $\eqref{eq3}$， 可得
+        $$
+        \mathbf{1}^Ty-N\beta_0-\mathbf{1}^TX\beta_{1:p}
+        \\ = \sum_{i=1}^N y_i - N\beta_0^c - \mathbf{1}^TX\beta_{1:p}=0
+        \\ \rightarrow \beta_0 = \frac{\sum_{i=1}^N y_i-N\bar x\beta^c_{1:p}}{N}=\bar y-\frac{\mathbf{1}^TX\beta_{1:p}}{N} \label{eq7}
+        $$
+
+      * 由式$\eqref{eq3}$  $\eqref{eq4}$， 可得
+        $$
+        X^T(y-\beta_0\mathbf{1}-X\beta_{1:p})-\frac{\lambda sign({\beta_{1:p}})}{2}
+        
+        \\ = X^T(y-\bar y-(X\beta_{1:p}-\mathbf{1}\frac{\mathbf{1}^TX\beta_{1:p}}{N}))-\frac{\lambda sign({\beta_{1:p}})}{2}
+        \\ = X^T(y-\bar y-(X-\mathbf{1}\bar {\mathbf{x}}^T)\beta_{1:p})-\frac{\lambda sign({\beta_{1:p}})}{2}
+        \\ = (X-\mathbf{1}\bar {\mathbf{x}}^T)^T(y-\bar y-(X-\mathbf{1}\bar {\mathbf{x}}^T)\beta_{1:p})-\frac{\lambda sign({\beta^c_{1:p}})}{2}\\+\bar {\mathbf{x}}\mathbf{1}^T(y-\bar y)-{\mathbf{x}}\mathbf{1}^T(X-\mathbf{1}\bar {\mathbf{x}}^T)\beta_{1:p}
+        \\ = (X-\mathbf{1}\bar {\mathbf{x}}^T)^T(y-\bar y-(X-\mathbf{1}\bar {\mathbf{x}}^T)\beta_{1:p})-\frac{\lambda sign({\beta_{1:p}})}{2}\\+\bar {\mathbf{x}}(N\bar y-N\bar y)-{\mathbf{x}}(N\bar {\mathbf{x}}^T-N\bar {\mathbf{x}}^T)\beta_{1:p}
+        \\=(X-\mathbf{1}\bar {\mathbf{x}}^T)^T(y-\bar y-(X-\mathbf{1}\bar {\mathbf{x}}^T)\beta_{1:p})-\frac{\lambda sign({\beta_{1:p}})}{2}=0 \label{eq6}
+        $$
+
+      * 由此$\eqref{eq7}$, 并发现$\eqref{eq5},\eqref{eq6}$形式一致，可得
+        $$
+        \beta_0=\beta_0^c-\bar {\mathbf{x}}^T\beta^c_{1:p}\\
+        \beta_{1:p}=\beta^c_{1:p}
+        $$
+        
 
 ## Ex 3.6
 
