@@ -663,3 +663,96 @@
   
 
   
+
+## Ex 3.23
+
+* 题目
+
+  ![1616852121547](assets/1616852121547.png)
+
+* 思考：我认为协方差和方差应该都按照N-1去取才符合Person 相关系数的定义。但是题干里面很多都用的N就比较迷惑，思考了一下是不是因为这个题都是对中心化和标准化后的X来说的（此时均值和方差均已知），并不是对中心化X前来说。
+
+  * 这里的题意中说到了均值0，标准差1，也就是这两个值是已知的无需估计的，就可以使用**总体Person相关系数**
+  * 如果题意并没有提到X均值方差，而是使用了中心化，就应该是**样本Person 相关系数**
+
+* 求解
+
+  * 第一问
+
+    * 由最小二乘可知
+      $$
+      \frac{\part RSS(\beta)}{\part \beta}=-2X^T(y-X\beta)
+      =0\\
+      \rightarrow <x_j,y-X\hat \beta>=0
+      $$
+
+    * 化简题目中的式子可得
+      $$
+      \frac{1}{N}|<x_j,y-u(\alpha)>|=\frac{1}{N}|<x_j,y-\alpha X\hat\beta>|
+      \\ =\frac{1}{N}|<x_j,y-X\hat\beta>+<x_j,(1-\alpha)X\hat\beta>|
+      \\ = (1-\alpha)\frac{1}{N}|<x_j,X\hat\beta>|
+      \\ = (1-\alpha)\lambda
+      $$
+
+    * 因此有结论，随着$u$逼近，$x_j$与残差相关系数绝对值保持不变($\tilde x_j$是标准化前的$x_j$)
+      $$
+      |\rho|=|Corr(x_j,y-u(\alpha))|
+      \\ = \frac{|Cov(x_j,y-u(\alpha))|}{\sqrt{Var(x_j)Var(y-u(\alpha))}}
+      \\ = \frac{\frac{1}{N}|<x_j,y-u(\alpha)>|}{\sqrt{\frac{1}{N}<x_j,x_j>\times \frac{1}{N}<y-u(\alpha),y-u(\alpha)>}}
+      \\ = \frac{\frac{1}{N}|<x_j,y-u(\alpha)>|}{\sqrt{\frac{1}{N}<\frac{\tilde x_j}{\sqrt{1/N<\tilde x_j,\tilde x_j>}},\frac{\tilde x_j}{\sqrt{1/N<\tilde x_j,\tilde x_j>}}>\times \frac{1}{N}<y-u(\alpha),y-u(\alpha)>}}
+      \\=\frac{ (1-\alpha)\lambda}{\sqrt{\frac{1}{N}<y-u(\alpha),y-u(\alpha)>}}
+      $$
+
+  * 第二问(这里指的是Person 相关系数)
+
+    * 由第一问继续推导
+      $$
+      |\rho|=\frac{ (1-\alpha)\lambda}{\sqrt{\frac{1}{N}<y-u(\alpha),y-u(\alpha)>}}
+      \\ = \frac{(1-\alpha)\lambda}{\sqrt{\frac{1}{N}(y-\alpha X(X^TX)^{-1}X^Ty)^T(y-\alpha X(X^TX)^{-1}X^Ty)}}
+      \\ = \frac{(1-\alpha)\lambda}{\sqrt{\frac{1}{N}y^T(I-\alpha X(X^TX)^{-1}X^T)^T(I-\alpha X(X^TX)^{-1}X^T)y}}
+      \\ = \frac{(1-\alpha)\lambda}{\sqrt{\frac{1}{N}y^T(I-(2\alpha-\alpha^2) X(X^TX)^{-1}X^T)y}}
+      \\ = \frac{(1-\alpha)\lambda}{\sqrt{\frac{1}{N}y^T((1-2\alpha+\alpha^2)I+(2\alpha-\alpha^2)(I-X(X^TX)^{-1}X^T))y}}
+      \\ = \frac{(1-\alpha)\lambda}{\sqrt{\frac{y^Ty}{N}(1-\alpha)^2+\frac{1}{N}((2\alpha-\alpha^2)((I-X(X^TX)^{-1}X^T))y)^T(I-X(X^TX)^{-1}X^T))y)}}
+      \\ = \frac{(1-\alpha)\lambda}{\sqrt{Var(y)(1-\alpha)^2+\frac{1}{N}(2\alpha-\alpha^2)RSS}}\ \because y 的方差为1
+      \\ = \frac{(1-\alpha)}{\sqrt{(1-\alpha)^2+\frac{2\alpha-\alpha^2}{N}RSS}}\lambda
+      $$
+
+  * 第三问
+
+    * 初始满足，活跃集$A_k$与r相关系数相同，均为$\lambda$
+
+    * 因为前进方向是最小二乘方向
+      $$
+      \delta_k=(X_{A_k}^TX_{A_k})^{-1}X_{A_k}^Tr_k
+      $$
+
+    * 由第一问，所以相关系数保持(keep tieds)
+
+    * 由第二问，相关系数慢慢减小0(monotonically decreasing)
+
+
+
+## Ex 3.24 
+
+* 题目：![1616870390682](assets/1616870390682.png)
+
+* 解：
+
+  * 由于$A_k$和r相关性相等，即有
+
+    $$
+    \forall x_j \in A_k, \frac{<x_j,r_k>}{\|x_j\|\|r_k\|}=\lambda
+    $$
+
+  * 因此有($u_k=X_{A_k}\delta_k=X_{A_k}(X_{A_k}^TX_{A_k})^{-1}X_{A_k}^Tr_k​$)
+    $$
+    \frac{<x_j,u_k>}{\|x_j\|\|u_k\|}
+    \\ =\frac{<x_j,u_k-r_k+r_k>}{\|x_j\|\|u_k\|}
+    \\ =\frac{<x_j,r_k>}{\|x_j\|\|u_k\|}+\frac{<x_j,u_k-r_k>}{\|x_j\|\|u_k\|}
+    \\ =\frac{<x_j,r_k>}{\|x_j\|\|u_k\|}+\frac{x_j^T(X_{A_k}(X_{A_k}^TX_{A_k})^{-1}X_{A_k}^T-I)r_k}{\|x_j\|\|u_k\|}
+    \\\because X_{A_k}^T(X_{A_k}(X_{A_k}^TX_{A_k})^{-1}X_{A_k}^T-I)r_k=(X_{A_k}^T-X_{A_k}^T)r_k=0,\\ \therefore x_j^T(X_{A_k}(X_{A_k}^TX_{A_k})^{-1}X_{A_k}^T-I)r_k=0
+    \\ \frac{<x_j,u_k>}{\|x_j\|\|u_k\|} =\frac{<x_j,r_k>}{\|x_j\|\|u_k\|}
+    \\ = \frac{\lambda \|r_k\|}{\|u_k\|}
+    $$
+
+  * 由相关系数相同，则角相同(cos一致)
