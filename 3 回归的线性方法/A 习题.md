@@ -738,21 +738,78 @@
 
 * 解：
 
+  * 这里指的是相关性相同(相关系数绝对值一致)
+
   * 由于$A_k$和r相关性相等，即有
 
     $$
-    \forall x_j \in A_k, \frac{<x_j,r_k>}{\|x_j\|\|r_k\|}=\lambda
+    \forall x_j \in A_k, \frac{|<x_j,r_k>|}{\|x_j\|\|r_k\|}=\lambda
     $$
 
   * 因此有($u_k=X_{A_k}\delta_k=X_{A_k}(X_{A_k}^TX_{A_k})^{-1}X_{A_k}^Tr_k​$)
     $$
-    \frac{<x_j,u_k>}{\|x_j\|\|u_k\|}
-    \\ =\frac{<x_j,u_k-r_k+r_k>}{\|x_j\|\|u_k\|}
-    \\ =\frac{<x_j,r_k>}{\|x_j\|\|u_k\|}+\frac{<x_j,u_k-r_k>}{\|x_j\|\|u_k\|}
-    \\ =\frac{<x_j,r_k>}{\|x_j\|\|u_k\|}+\frac{x_j^T(X_{A_k}(X_{A_k}^TX_{A_k})^{-1}X_{A_k}^T-I)r_k}{\|x_j\|\|u_k\|}
+    \frac{|<x_j,u_k>|}{\|x_j\|\|u_k\|}
+    \\ =\frac{|<x_j,u_k-r_k+r_k>|}{\|x_j\|\|u_k\|}
+    \\ =\left|\frac{<x_j,r_k>}{\|x_j\|\|u_k\|}+\frac{<x_j,u_k-r_k>}{\|x_j\|\|u_k\|}\right|
+    \\ =\left|\frac{<x_j,r_k>}{\|x_j\|\|u_k\|}+\frac{x_j^T(X_{A_k}(X_{A_k}^TX_{A_k})^{-1}X_{A_k}^T-I)r_k}{\|x_j\|\|u_k\|}\right|
     \\\because X_{A_k}^T(X_{A_k}(X_{A_k}^TX_{A_k})^{-1}X_{A_k}^T-I)r_k=(X_{A_k}^T-X_{A_k}^T)r_k=0,\\ \therefore x_j^T(X_{A_k}(X_{A_k}^TX_{A_k})^{-1}X_{A_k}^T-I)r_k=0
-    \\ \frac{<x_j,u_k>}{\|x_j\|\|u_k\|} =\frac{<x_j,r_k>}{\|x_j\|\|u_k\|}
+    \\ \left|\frac{<x_j,u_k>}{\|x_j\|\|u_k\|}\right| =\left|\frac{<x_j,r_k>}{\|x_j\|\|u_k\|}\right|
     \\ = \frac{\lambda \|r_k\|}{\|u_k\|}
     $$
+    
 
-  * 由相关系数相同，则角相同(cos一致)
+
+
+
+## Ex 3.25
+
+* 题干
+
+  ![1616913010765](assets/1616913010765.png)
+
+* 求解：
+
+  * 在书中，变量活跃集为$A_k$, 更新方向为$ u_k=X_{A_k}\delta_k= X_{A_k}(X_{A_k}^TX_{A_k})^{-1}X_{A_k}^Tr_k$
+
+  * 因此下一个选择的变量$x_i$满足
+    $$
+    \max_{x_i\not \in A_k} |<x_i,r_k-\alpha u_k>|\\ = |<x_j,r_k-\alpha u_k>|, j\in A_k
+    \\ = (1-\alpha) \lambda \ \because 沿用Ex\ 3.23的定义和结论
+    $$
+
+  * 化简得到
+    $$
+    (1-\alpha) \lambda
+    \\ =\max_{x_i\not \in A_k} |<x_i,r_k-\alpha u_k>| 
+    \\ =\max_{x_i\not \in A_k} |<x_i,r_k>-\alpha <x_i,u_k>|
+    $$
+
+  * 若$<x_{i},r_k>-\alpha <x_{i},u_k>  ​$大于0，则有
+    $$
+    \alpha=\frac{\lambda -<x_{ i}, r_k>}{\lambda - <x_{ i}, u_k>}
+    $$
+
+  * 否则
+    $$
+    \alpha=\frac{\lambda + <x_{ i}, r_k>}{\lambda + <x_{ i}, u_k>}
+    $$
+
+  * 示意图如下：
+
+    * 蓝色的线是$f_k(\alpha)=|<x_i,r_k-\alpha u_k>|$
+    * 红色的线是$g(\alpha)=(1-\alpha)\lambda$
+    * 蓝色的截距一定小于红色线，也就是初始时，活跃集变量和残差的相关性最大
+      * 这是由LAR过程进行数学归纳得出
+      * LAR第一步找相关性最大，满足蓝色的截距一定小于红色线截距
+      * 若LAR第k步满足蓝色的截距一定小于红色线截距，而LAR是找$\alpha$最小时相关系数相等的变量，由于相关性是连续的，找到后其他变量相关系数肯定更小，因此新的k+1步仍然满足蓝色的截距一定小于红色线截距，即活跃集变量和残差的相关性最大
+    * 由于蓝色的截距一定小于红色线，且因为函数连续性，通过示意图可以看出，找$\alpha \in [0, 1]$中$g(\alpha)$和$f_k(\alpha)$变量$\alpha$最小的交点，等价于找$g(\alpha) $与$\max_k(f_k(\alpha))$的交点
+
+    ![1616938149511](assets/1616938149511.png)
+
+  * 因此有，最后答案为, 其中$\min_{[0, 1]}$含义为只计算在$[0, 1]$区间的最小值，$\min^+$含义为只计算正值最小值
+    $$
+    \alpha = \min_{[0, 1]}\{\frac{\lambda -<x_{ i}, r_k>}{\lambda - <x_{ i}, u_k>}, \frac{\lambda + <x_{ i}, r_k>}{\lambda + <x_{ i}, u_k>} \}=\mathbf{min}^{+}\{\frac{\lambda -<x_{ i}, r_k>}{\lambda - <x_{ i}, u_k>}, \frac{\lambda + <x_{ i}, r_k>}{\lambda + <x_{ i}, u_k>} \}
+    $$
+    
+
+    
