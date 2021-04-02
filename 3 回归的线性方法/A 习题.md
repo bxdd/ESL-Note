@@ -660,9 +660,38 @@
 
     
 
-  
+## Ex 3.13 
 
-  
+* 题目
+
+  ![1617384944089](assets/1617384944089.png)
+
+* 第一问
+  $$
+  \hat y ^{pcr}_{(M)}=\bar y\mathbf{1}+\sum_{m=1}^M \hat \theta_m z_m
+  \\ = \bar y\mathbf{1}+X\sum_{m=1}^M \hat \theta_m v_m
+  \\ \rightarrow \hat\beta^{pcr}_{(M)}=\sum_{m=1}^M \hat \theta_m v_m
+  $$
+
+* 第二问
+
+  * 根据公式，有
+    $$
+    \hat\beta^{pcr}_{(p)}=\sum_{m=1}^p \hat \theta_m v_m
+    \\ = \sum_{m=1}^p \frac{<z_m, y>}{<z_m,z_m>} v_m
+    \\ =V 
+    \left\{\begin{matrix}
+    z_1^Tz_1&&&\\
+    &z_2^Tz_2&&\\
+    &&\ddots&\\
+    &&& z_p^Tz_p
+    
+    \end{matrix}\right\}^{-1} Z^Ty
+    \\ = V(V^TX^TXV)^{-1}V^TX^T y
+    \\ = VV^T(X^TX)^{-1}VV^TX^Ty
+    \\ = (X^TX)^{-1}Xy=\hat \beta^{ls}
+    $$
+    
 
 ## Ex 3.23
 
