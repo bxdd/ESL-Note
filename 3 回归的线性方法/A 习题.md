@@ -752,6 +752,10 @@
 
 * 假设：假设 $Y$ 和 $X$ 均被中心化
 
+* 前置知识：
+
+  * 若$\Sigma$是(半)正定矩阵，则他存在唯一的平方根$\Sigma^{1/2}$使得$\Sigma=\Sigma^{1/2}\Sigma^{1/2}$, 且$\Sigma^{1/2}$对称并且(半)正定
+
 * 第一问：
 
   * 由典型相关分析可知，其求解的是最大化相关系数
@@ -781,10 +785,10 @@
 
   * 记$v^*=(X^TX)^{1/2}v, u^*=(Y^TY)^{1/2}u$, 因此问题变为
     $$
-    \max_{{u^*}^Tu^*=1\\{v^*}^Tv^*=1}{u^*}^T{(Y^TY)^{-1/2}}^T(Y^TX)(X^TX)^{-1/2}v^*
+    \max_{{u^*}^Tu^*=1\\{v^*}^Tv^*=1}{u^*}^T(Y^TY)^{-1/2}(Y^TX)(X^TX)^{-1/2}v^*
     $$
 
-  * 对$H={(Y^TY)^{-1/2}}^T(Y^TX)(X^TX)^{-1/2}$进行SVD分解得到
+  * 对$H=(Y^TY)^{-1/2}(Y^TX)(X^TX)^{-1/2}$进行SVD分解得到
     $$
     H=U^*D^*{V^*}^T
     $$
@@ -826,8 +830,8 @@
 
   * 因此$v^*=(X^TX)^{1/2}v, u^*=(Y^TY)^{1/2}u$也和之前求得的正交
     $$
-    {v^*_j}^Tv^*_m=v_j^T((X^TX)^{1/2})^T(X^TX)^{1/2}v_m=v_j^T(X^TX)v_m=0\\
-    {u^*_j}^Tu^*_m=u_j^T((Y^TY)^{1/2})^T(Y^TY)^{1/2}u_m=u_j^T(Y^TY)u_m=0\\
+    {v^*_j}^Tv^*_m=v_j^T(X^TX)^{1/2}(X^TX)^{1/2}v_m=v_j^T(X^TX)v_m=0\\
+    {u^*_j}^Tu^*_m=u_j^T(Y^TY)^{1/2}(Y^TY)^{1/2}u_m=u_j^T(Y^TY)u_m=0\\
     $$
 
   * 因此$a,b$之前选过的地方必须是0，所以第$m$个$u^*,v^*$就应该是第$m$大奇异值对应的左右奇异向量
@@ -856,11 +860,11 @@
 
   * 根据导数，并记$v^*=(X^TX)^{1/2}v, u^*=(Y^TY)^{1/2}u$, 有
     $$
-    ((Y^TY)^{-1/2})^T\frac{\part J}{\part u}=((Y^TY)^{-1/2})^T(Y^TX)(X^TX)^{-1/2}v^*-\lambda u^*=0\\
-    ((X^TX)^{-1/2})^T\frac{\part J}{\part v}=((X^TX)^{-1/2})^T(X^TY)(Y^TY)^{-1/2}u^*-\lambda v^*=0\\
+    (Y^TY)^{-1/2}\frac{\part J}{\part u}=(Y^TY)^{-1/2}(Y^TX)(X^TX)^{-1/2}v^*-\lambda u^*=0\\
+    (X^TX)^{-1/2}\frac{\part J}{\part v}=(X^TX)^{-1/2}(X^TY)(Y^TY)^{-1/2}u^*-\lambda v^*=0\\
     $$
 
-  * 记$M=((Y^TY)^{-1/2})^T(Y^TX)(X^TX)^{-1/2}$, 也就是有
+  * 记$M=(Y^TY)^{-1/2}(Y^TX)(X^TX)^{-1/2}$, 也就是有
     $$
     Mv^*=\lambda u^*\\
     M^Tu^*=\lambda v^*
@@ -878,6 +882,165 @@
 
   * 根据上面的推导，当$m>1 $时，$v^*=(X^TX)^{1/2}v, u^*=(Y^TY)^{1/2}u$也和之前求得的正交
   * 由于$\lambda=v^T(X^TY)u$是最优化目标， 而因为正交，所以当$m=2$时，$u^*$和$v^*$就应该取第二大奇异值对应的奇异向量
+
+## Ex 3.21
+
+* 题目：![1618652044279](assets/1618652044279.png)
+
+* 求解
+
+  * $\hat B^{rr}(m)$的公式为
+    $$
+    \hat B^{rr}(m)\\ = {\arg\max}_{rank(B)=m}tr((Y-XB)\Sigma^{-1}(Y-XB)^T)
+    $$
+
+  * 因为$\Sigma=\frac{Y^TY}{N}$, 所以其正定并且可以得出其平方根$\Sigma^{1/2}$, 化简公式得到
+    $$
+    tr((Y-XB)\Sigma^{-1}(Y-XB)^T)
+    \\ =tr((Y\Sigma^{-1/2}-XB\Sigma^{-1/2})(Y\Sigma^{-1/2}-XB\Sigma^{-1/2})^T)
+    \\ = tr((Y^*-XB\Sigma^{-1/2})(Y^*-XB\Sigma^{-1/2})^T)
+    \\ = tr((Y^*-XB\Sigma^{-1/2})^T(Y^*-XB\Sigma^{-1/2}))
+    \\ = tr((Y^*)^TY^*-\Sigma^{-1/2}B^TX^TY^*-(Y^*)^TXB\Sigma^{-1/2}+\Sigma^{-1/2}B^TX^TXB\Sigma^{1/2})
+    \\ = tr((Y^*)^TY^*-(X^TY^*)^T(X^TX)^{-1}(X^TY^*))
+    \\+ tr((X^TY^*)^T(X^TX)^{-1}(X^TY^*)-\Sigma^{-1/2}B^TX^TY^*-(Y^*)^TXB\Sigma^{-1/2}+\Sigma^{-1/2}B^TX^TXB\Sigma^{1/2})
+    \\ =tr((Y^*)^TY^*-(X^TY^*)^T(X^TX)^{-1}(X^TY^*))
+    \\+tr(((X^TX)^{-1/2}X^TY^*-(X^TX)^{1/2}B\Sigma^{-1/2})^T((X^TX)^{-1/2}X^TY^*-(X^TX)^{-1/2}B\Sigma^{1/2}))
+    $$
+
+  * 则只需要求
+    $$
+    \hat B^{rr}(m) = {\arg\max}_{rank(B)=m}
+    \\tr(((X^TX)^{-1/2}X^TY^*-(X^TX)^{1/2}B\Sigma^{-1/2})^T((X^TX)^{-1/2}X^TY^*-(X^TX)^{-1/2}B\Sigma^{1/2}))
+    $$
+
+  * 引理：若有$Z_{J\times K}​$, $A_{J\times K}​$, 且$Rank(Z)=min(J,K), Rank(A)=m < Rank(Z)​$, 则有
+    $$
+    A^*=\arg\min_{A}\|Z-A\|^2=\arg\min_{A}\sum_{i=1}^J\sum_{j=1}^K (Z_{i,j}-A_{i,j})^2
+    \\=\arg\min_{A}tr((Z-A)^T(Z-A))
+    \\ A^*=\sum_{i=1}^m \mu_iU_iV_i^T
+    $$
+    其中，$\mu_i​$是$Z​$的第$i​$大奇异值，$u_i, v_i​$是其对应的左右奇异向量
+
+    * 证明：
+
+      * 因为$Rank(A)=m​$, 则$A​$只有$m​$个非0的奇异值，记$A​$为
+        $$
+        A=X\Phi Y^T\ \because 奇异值分解
+        \\=\sum_{i=1}^m \phi_i X_iY_i^T
+        $$
+        其中$\Phi​$只有对角元有值，设其有且只有前$m​$个对角元非0
+
+      * 对目标函数进行微分，得到
+        $$
+        d(tr((Z-A)^T(Z-A)))
+        \\= tr(-dA^T(Z-A)-(Z-A)^TdA)
+        \\ = -2tr((Z-A)^TdA)
+        \\ = -2tr(\Phi Y^T(Z-X\Phi Y^T)^TdX+dY((Z-X\Phi Y^T)^TX\Phi)^T)
+        \\ = -2tr(((Z-X\Phi Y^T)Y\Phi^T)^TdX+((Z-X\Phi Y^T)^TX\Phi)^TdY)
+        
+        \\ 
+        \left\{
+        \begin{matrix}
+        \frac{\part f}{\part X} = -2(Z-X\Phi Y^T)Y\Phi^T =0
+        \\ \frac{\part f}{\part Y} = -2(Z-X\Phi Y^T)^TX\Phi=0
+        \end{matrix}
+        \right.
+        \\ \leftrightarrow 
+        \left\{
+        \begin{matrix}
+        ZY\Phi^T-X\Phi\Phi^T=0
+        \\ Z^TX\Phi-Y\Phi^T\Phi =0
+        \end{matrix}
+        \right.
+        \\ \leftrightarrow 
+        \left\{
+        \begin{matrix}
+        X(\Phi\Phi^T)_i = ZY\Phi^T_i\ 
+        \\Y(\Phi^T\Phi)_i=Z^TX\Phi_i
+        \end{matrix}
+        \right.(i=1,2,\dots, m)
+        \\ \leftrightarrow 
+        \left\{
+        \begin{matrix}
+        X_i\phi_i^2 = ZY_i\phi_i\ \leftrightarrow X_i\phi_i=ZY_i
+        \\Y_i\phi_i^2=Z^TX_i\phi_i\leftrightarrow Y_i\phi_i=Z^TX_i
+        \end{matrix}
+        \right.(i=1,2,\dots, m)
+        $$
+
+      * 由此得到取极值点的充要条件
+        $$
+        \left\{
+        \begin{matrix}
+        X_i\phi_i=ZY_i \\
+        Y_i\phi_i=Z^TX_i
+        \end{matrix}
+        \right.(i=1,2,\dots, m)\label{ex_21_1}
+        $$
+
+      * 根据上式，可以推出
+        $$
+        \left\{
+        \begin{matrix}
+        Y_i\phi_i^2=Z^TZY_i \\
+        X_i\phi_i^2=ZZ^TX_i
+        \end{matrix}
+        \right.(i=1,2,\dots, m) \label{ex_21_2}
+        $$
+
+      * 可以推出，$Y_i​$是$Z^TZ​$特征向量， $X_i​$的$ZZ^T​$的特征向量，同时根据奇异值分解的定义，$X_i,Y_i​$分别是$Z​$左右奇异向量，$\phi_i​$是$Z​$的奇异值，即
+        $$
+        \phi_i=\mu_i, X_i=U_i, Y_i=V_i\ (i=1,2,\dots, m) \label{ex_21_3}
+        $$
+        此时又可以推出$\eqref{ex_21_1}$, 因此得到$\eqref{ex_21_1}, \eqref{ex_21_2},\eqref{ex_21_3}$相互等价，且都是目标函数极值点的充要条件。因为只可能存在极小值点且只有一个，所以这个点就是最小值点。
+
+      * 此时
+        $$
+        A=\sum_{i=1}^m \phi_i X_iY_i^T=\sum_{i=1}^m\mu_iU_iV_i^T
+        $$
+
+      * 此时极值为
+        $$
+        tr((Z-A)^T(Z-A))=tr((\sum_{i=m+1}^{min(J,K)}\mu_i U_iV_i^T )^T(\sum_{i=m+1}^{min(J,K)}\mu_i U_iV_i^T ))
+        \\ = tr(\sum_{i=m+1}^{min(J,K)} \mu_i^2 V_iU_i^TU_iV_i^T)
+        \\ = tr(\sum_{i=m+1}^{min(J,K)} \mu_i^2 V_iV_i^T)=\sum_{i=m+1}^{min(J,K)} \mu_i^2
+        $$
+        
+
+  * 根据引理，有
+    $$
+    (X^TX)^{1/2}B\Sigma^{-1/2} = \sum_{i=1}^m d_jV_j^*(U_j^*)^T\\
+    (X^TX)^{-1/2}X^TY^*
+    \\ = (X^TX)^{-1/2}X^TY(Y^TY)^{-1/2}\ \because \Sigma = \frac{Y^TY}{N}
+    \\ = (U^*D^*{V^*}^T)^T
+    \\=V^*{D^*}^T{U^*}^T \label{ex_21_4}\ \because 典则相关分析，Ex3.20
+    $$
+
+  * 继续可以推出
+    $$
+    (X^TX)^{1/2}B\Sigma^{-1/2}=\sum_{i=1}^m  ({V^*}{D^*}^T)_j{U_j^*}^T
+    \\ =\sum_{i=1}^m (X^TX)^{-1/2}X^TY^* U^*_j (U_j^*)^T\ \because \eqref{ex_21_4}
+    \\ = (X^TX)^{-1/2}X^TY^* \sum_{i=1}^mU^*_j (U_j^*)^T
+    \\ \rightarrow \hat B^{rr}(m) = (X^TX)^{-1}X^TY \sum_{i=1}^m \Sigma^{-1/2}U^*_j(U^*_j)^T\Sigma^{1/2}
+    \\ = (X^TX)^{-1}X^TY \sum_{i=1}^m U_jU_j^{-}\ \because 题干条件
+    \\ = \hat B^{ls}\left(U_1,U_2,\dots,U_m\right)\left(U_1^-,U_2^-,\dots,U_m^-\right)^T
+    \\ = \hat B^{ls}  \mathbf{U_m}\mathbf{U^-_m}, \mathbf{U_m} = \Sigma^{-1/2}U^*, \mathbf{U_m^-}={U^*}^T \Sigma^{1/2}
+    $$
+
+## Ex 3.22
+
+* 题目：![1618681508231](assets/1618681508231.png)
+
+* 求解：
+
+  * 将新采样带入在上一题中$\eqref{ex_21_4}​$，有
+    $$
+    (X^TX)^{-1/2}X^TY^*
+    \\ = (X^TX)^{-1/2}X^TY((Y-X\hat B)^T(Y-X\hat B))^{-1/2}
+    \\ = (X^TX)^{-1/2}X^TY((Y-X(X^TX)^{-1}X^T Y)^T(Y-X(X^TX)^{-1}X^T Y))^{-1/2}
+    \\ = (X^TX)^{-1/2}X^TY(Y^T(I-X(X^TX)^{-1}X^T)^2Y)^{-1/2}
+    \\ = (X^TX)^{-1/2}X^TY(Y^T(I-X(X^TX)^{-1}X^T)Y)^{-1/2}
+    $$
 
 ## Ex 3.23
 
