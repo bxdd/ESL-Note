@@ -7,9 +7,28 @@ site_author: bxdd
 repo_name: 'bxdd/ESL-Note'
 repo_url: 'https://github.com/bxdd/ESL-Note'
 
+theme:
+    name: material
+    palette:
+        primary: 'Blue Grey'
+        accent: 'Pink'
+    feature:
+        tabs: false
+    language: 'zh'
+
+
 copyright: 'Copyright &copy; 2021-2026 bxdd'
 
 markdown_extensions: 
+    - admonition
+    - codehilite:
+        guess_lang: false
+        linenums: false
+    - toc:
+        permalink: true
+    - footnotes
+    - meta
+    - def_list
     - mdx_math:
         enable_dollar_delimiter: True #for use of inline $..$
 
