@@ -1,0 +1,19 @@
+site_name: 'ESL-Note'
+
+site_description: 'The Elements of Statistical Learning(ESL) 中文版笔记，包括公式和习题的详细推导。'
+
+site_author: bxdd
+
+repo_name: 'bxdd/ESL-Note'
+repo_url: 'https://github.com/bxdd/ESL-Note'
+
+copyright: 'Copyright &copy; 2021-2026 bxdd'
+
+markdown_extensions: 
+    - mdx_math:
+        enable_dollar_delimiter: True #for use of inline $..$
+
+# Required to load the MathJax javascript for the mdx_math.py
+extra_javascript:
+    - mathjax-config.js
+    - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
