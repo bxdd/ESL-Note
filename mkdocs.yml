@@ -10,8 +10,8 @@ repo_url: 'https://github.com/bxdd/ESL-Note'
 theme:
     name: material
     palette:
-        primary: 'Blue Grey'
-        accent: 'Pink'
+        primary: 'Blue'
+        accent: 'Yellow'
     feature:
         tabs: false
     language: 'zh'

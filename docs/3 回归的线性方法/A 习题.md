@@ -459,7 +459,6 @@
       =x_{q+j}-\sum_{i=1}^qu_i<u_i, x_{q+j}>\\
       =x_{q+j}-\sum_{i=1}^qu_iu_i^Tx_{q+j}\\
       =(I-QQ^T)x_{q+j}\\
-      
       Q_*=(Q,u_{q+j}=\frac{z_{q+j}}{\|z_{q+j}\|})
       $$
 
