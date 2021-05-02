@@ -623,7 +623,6 @@
   * 求微分
     $$
     dRSS=d([K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]^Tdiag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1}) \\ [K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)])
-    
     \\=[-K_{Nk}(I_k\otimes X)dVec(B)]^Tdiag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1}) \\ [K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]
     \\+[K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]^T diag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1})\\ [-K_{Nk}(I_k\otimes X)dVec(B)]
     \\=-2[K_{Nk}Vec(Y)-K_{Nk}(I_k\otimes X)Vec(B)]^Tdiag({\Sigma_1}^{-1},{\Sigma_2}^{-1},\dots,{\Sigma_N}^{-1})\\K_{Nk}(I_k\otimes X)dVec(B)
@@ -681,7 +680,6 @@
     &z_2^Tz_2&&\\
     &&\ddots&\\
     &&& z_p^Tz_p
-    
     \end{matrix}\right\}^{-1} Z^Ty
     \\ = V(V^TX^TXV)^{-1}V^TX^T y
     \\ = VV^T(X^TX)^{-1}VV^TX^Ty
@@ -933,7 +931,6 @@
         \\ = -2tr((Z-A)^TdA)
         \\ = -2tr(\Phi Y^T(Z-X\Phi Y^T)^TdX+dY((Z-X\Phi Y^T)^TX\Phi)^T)
         \\ = -2tr(((Z-X\Phi Y^T)Y\Phi^T)^TdX+((Z-X\Phi Y^T)^TX\Phi)^TdY)
-        
         \\ 
         \left\{
         \begin{matrix}

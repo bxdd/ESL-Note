@@ -50,7 +50,6 @@
     \\ = E_XE_{\epsilon|X}(x_0^T(X^TX)^{-1} X^T\epsilon\epsilon^TX(X^TX)^{-1}x_0)+\sigma^2
     \\ = E_X(x_0^T(X^TX)^{-1} X^TE_{\epsilon|X}(\epsilon\epsilon^T)X(X^TX)^{-1}x_0)+\sigma^2 
     \\ = E_X(x_0^T(X^TX)^{-1} X^T\sigma^2 IX(X^TX)^{-1}x_0+\sigma^2)
-    
     \\ = E_X(x_0^T(X^TX)^{-1} X^TX(X^TX)^{-1}x_0)\sigma^2+\sigma^2
     \\ = E_X(x_0^T(X^TX)^{-1}x_0) \sigma^2+\sigma^2
     \\ = E_XE_{\epsilon|X}(x_0^T(X^TX)^{-1}x_0) \sigma^2+\sigma^2
