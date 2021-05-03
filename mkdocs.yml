@@ -30,9 +30,10 @@ markdown_extensions:
     - meta
     - def_list
     - mdx_math:
-        enable_dollar_delimiter: True #for use of inline $..$
+        enable_dollar_delimiter: true
 
-# Required to load the MathJax javascript for the mdx_math.py
+
 extra_javascript:
-    - mathjax-config.js
-    - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
+    - mathjax.js
+    - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
