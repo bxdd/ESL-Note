@@ -60,9 +60,9 @@
 
     * $FS_0$比lasso 约束更强，可以看成lasso 的单调版本，其系数曲线更光滑，所以有更小的方差（TODO: 不理解光滑和小方差）
 
-    * $FS_0$比lasso 更加复杂
+    * $FS_0​$比lasso 更加复杂
 
-      * lasso 是$\beta$ 以$L_1$范数为方向，进行单位增正后，最优化达到的残差平方和
+      * lasso 是$\beta​$ 以$L_1​$范数为方向，进行单位增正后，最优化达到的残差平方和
 
       * $FS_0$ 是$\beta$ 在沿着系数路径$L_1$弧长为方向，进行单位增长后，最优化达到的残差平方和。这是因为$FS_0$的系数不会轻易改变方向，所以$L_1$范数就是$L_1$弧长
 
@@ -70,4 +70,119 @@
 
 ## 3 分段线性路径算法
 
-* 
+* 对于问题
+  $$
+  \hat\beta(\lambda)=\arg\min_{\beta}(R(\beta)+J(\beta))\\
+  \\ = \arg\min_{\beta}(\sum_{i=1}^{N}L(x_{i}^T\beta, y_i)+J(\beta))\\
+  $$
+  其中损失函数$L$和惩罚函数$J$都是凸函数
+
+* 该问题解的路径 $\beta^{(λ)}​$为分段线性的充分条件为（这也意味着解的路径可以有效地计算出来）
+  * $R​$关于$\beta​$ 的函数是二次或者分段二次
+  * $J$关于$\beta$ 分段线性
+
+* 例子:
+
+  * 损失函数平方损失$L(t=y_i-x_i^T\beta)=t^2​$，和绝对误差损失$L(t=y_i-x_i^T\beta)=|t|​$
+
+  * 损失函数为Huber loss(支持向量机的例子)
+    $$
+    L(t)=\rho(t,\lambda) = 
+    \begin{cases}
+    \lambda |t| - \lambda^2/2 & |t| > \lambda\\
+    t^2 & |t|\le \lambda
+    \end{cases}
+    $$
+
+    * 图像（这里的$\delta$就是$\lambda$）
+
+      ![1620043002257](assets/1620043002257.png)
+
+    * 在习题 [SLS Ex 2.11](./B SLS 习题) 讨论了Huber loss和$L_1$ 正则化的等价性， 其优点是能增强平方误差损失函数(MSE, mean square error)对离群点的鲁棒性，对离群点的惩罚减小。
+
+  * 损失函数为Hinge loss(支持向量机的例子, 具体在后面详细讨论)
+
+    * 是用于分类器的损失函数，定义为
+
+    * 定义
+      $$
+      L(y,f)=[1-yf]_{+}=\min(1-yf,0), f\in \{-1,+1\}
+      $$
+
+## 4 Dantzig 选择器
+
+* **Dantzig selector (DS)**定义：下面准则的解称为 DS， 其中$\|\cdot\|_{\infty}$ 是无穷范数，表示向量中绝对值最大的组分
+  $$
+  \min_{\beta}\|\beta \|_1 \ s.t. \ {\|X^T(y-X\beta)\|}_{\infty} \le s
+  \\ \Leftrightarrow \min_{\beta}{\|X^T(y-X\beta)\|}_{\infty} \ s.t. \  \|\beta \|_1 \le t
+  $$
+
+* lasso 和 DS
+
+  * 对于活跃集中的所有变量，lasso 保持着与当前残差相同的内积（以及相关系数），并且将它们的系数向残差平方和的最优下降方向变化．在这个过程中，相同的相关系数单调下降（[习题 Ex 3.23](A 习题)），并且在任何时刻这个相关性大于非活跃集中的变量
+  * Dantzig 选择器试图最小化当前残差与所有变量之间的最大内积。因此它可以达到比 lasso 更小的最大值，但是在这一过程中会发生奇怪的现象，它可以在模型中包含这样一个变量，其与当前残差的相关性小于不在活跃集中的变量与残差的相关性。（TODO：之后看论文，这里不是特别理解）
+
+## 5 The Grouped Lasso
+
+* 背景：当时预测变量属于预定义的群体中， 希望对群体中每个成员一起进行收缩或选择（全要某个群体，或者全不要某个群体）
+
+* 假设$P$个预测变量被分到$L$个群体中，第$l$个群有$p_l$个成员，第$l$群的预测变量表示为$X_l$, 则有下列公式
+  $$
+  \min_{\beta \in R^p}(\|y - \beta_0-\sum_{l=1}^ L X_l \beta_l\|_2^2 + \lambda \sum_{i=1}^L \sqrt{p_l}\|\beta_l\|_2)
+  $$
+
+* 存在某个$\lambda$, 可以使得预测变量的整个群体都排除在模型外。这是因为$\sum_{i=1}^L \sqrt{p_l}\|\beta_l\|_2$ 这一项使得某个群体中的变量系数趋于相同（要不一起收缩，要不一起不变，欧式范数为 0 当且仅当其各组分都为 0）
+
+## 6 lasso 的更多性质
+
+* 这领域的结果对模型矩阵假设了如下条件
+  $$
+  \max_{j\in S^c} \|x_j^T X_{S} (X_{S}^TX_{S})^{-1} \|_1 \le 1-\epsilon , \epsilon \in (0, 1]
+  $$
+
+  * 其中$S$是标记真实的潜在模型中非零系数特征的子集， $X_S$是其对应的特征列。$S^c$是$S$的补集，也就是系数为0的子集， $X_{S^c}$是其对应的特征列。
+  * 这个假设的含义为，$ X_{S^c}$的列在 $X_S$ 上的最小二乘系数不会太大, 即两种变量并不是高度相关的
+
+* 可以修改 lasso 惩罚函数使得更大的系数收缩得不要太剧烈
+
+  * **平稳削减绝对偏差法 (smoothly clipped absolute deviation, SCAD)** 用$J_{\alpha}(\beta, \lambda)$ 替换了$\lambda |\beta|$, 有公式
+    $$
+    \frac{dJ_{\alpha}(\beta, \lambda)}{d\beta } = \lambda sign(\beta)[I(|\beta| \le  \lambda)+\frac{（\alpha \lambda - |\beta|)_{+}}{\alpha - 1}I(|\beta| >  \lambda)]
+    $$
+    其中第二项降低了对较大$\beta$的收缩程度，当$\alpha \rightarrow 0$, 此时不收缩（TODO 没懂）
+
+    ![1620051058518](assets/1620051058518.png)
+
+    上图展示了SCAD，lasso和$\beta^{1-v}$对降低大系数收缩程度作用，但是其使得计算变得困难（因为不是凸的
+
+  * adaptive lasso (Zou, 2006) 采用了$\sum_{j=1}^p w_j|\beta_j| =\frac{|\beta_j|}{|\hat \beta_j^{ls}|^v}$, 这是对$|\beta|^{1-v}$(上图)的近似，但是其是凸的，就容易计算。
+
+## 7 Pathwise Coordinate Optimization
+
+* **简单坐标下降 (simple coordinate descent)**， 可以替代使用LAR计算 lasso 路径的算法 。想法是固定 Lagrangian 形式中的惩罚参数 λ，在控制其它参数固定不变时，相继地优化每一个参数
+
+* 假设$\hat \beta_k(\lambda )$表示参数为$\lambda$ 的$\beta_k$的当前估计，然后要优化的参数为$\beta_j$, 公式如下假设预测变量都经过标准化得到 0 均值和单位范数）
+  $$
+  R(\hat\beta(\lambda), \beta_j) = \frac{1}{2}\sum_{i=1}^N (y_i-\sum_{k\not = j}x_{ik}^T\hat\beta_j(\lambda ) - x_{ij}\beta_j)^2+\lambda \sum_{k\not =j}|\hat \beta_j(\lambda)| + \lambda |\beta_j|
+  $$
+
+  * 上式可以看作响应变量为**部分残差**$y_i - \hat y_i ^{(j)} = y_i -\sum_{k\not = j}x_{ik}^T\hat\beta_j(\lambda )​$, 预测变量为$x_{ij}​$，系数为$\beta_j​$
+
+  * 其中，除了$\beta_j$, 其他都是固定的，并且对$\beta_j$ 进行更新
+    $$
+    \hat\beta_j(\lambda) \leftarrow S((y-\hat y^{(j)})^Tx_j=\sum_{i=1}^N (y_i - \hat y_i ^{(j)})x_{ij},\lambda)\\
+    S(t,\lambda)= sign(t)(|t|-\lambda)_{+} 是lasso中的软阈值算子
+    $$
+
+  * 这里的$(y-\hat y^{(j)})^Tx_j$是在标准化变量中，部分残差对单变量$x_{j} $的最小二乘系数
+
+* 重复迭代,轮流考虑每个变量直到收敛，直到得到lasso估计$\hat \beta(\lambda )​$
+
+* 该方法可以计算每个网格节点上的 lasso 解，该算法流程如下
+
+  * 从$\lambda_0 = \lambda_{max}​$开始，$\lambda_{max} ​$是使得$\hat \beta^{lasoo}(\lambda_{max}) = 0​$的最小的$\lambda​$
+  * 对$\lambda_{max}$进行缩小到新的节点, 得到$\lambda_1 = \lambda_0-\epsilon$，迭代每个变量直到收敛。
+  * 再次进行缩小，$\lambda_2 =\lambda_1 - \epsilon​$, 并且采用前一个解作为 $λ​$ 新值的“warm start"。
+  * 不断重复该过程，该算法可能比LARS快，因为其采用 warm start， 并且只计算网格节点的解，并没有计算整个lasso路径
+
+   
