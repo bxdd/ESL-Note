@@ -108,7 +108,6 @@
     $$
     c=(\hat\mu_2-\hat\mu_1)^T\beta
     \\ = \frac{(N-c\frac{N_1N_2}{N})}{N-2}(\hat\mu_2-\hat\mu_1)^T{\hat\Sigma}^{-1}(\hat\mu_2-\hat\mu_1)
-    
     \\ \Leftrightarrow (N-2+\frac{N_1N_2}{N}(\hat\mu_2-\hat\mu_1)^T{\hat\Sigma}^{-1}(\hat\mu_2-\hat\mu_1))c=N(\hat\mu_2-\hat\mu_1)^T{\hat\Sigma}^{-1}(\hat\mu_2-\hat\mu_1)
     \\ \Leftrightarrow c=\frac{N(\hat\mu_2-\hat\mu_1)^T{\hat\Sigma}^{-1}(\hat\mu_2-\hat\mu_1)}{N-2+\frac{N_1N_2}{N}(\hat\mu_2-\hat\mu_1)^T{\hat\Sigma}^{-1}(\hat\mu_2-\hat\mu_1)} \label{42_eq_c}
     $$
@@ -125,7 +124,6 @@
     X^T(y-\beta_0-X\beta) =0
     \\ \Leftrightarrow X^T(y+\mathbf{1}\frac{(N_1\hat \mu_1+N_2\hat \mu_2)^T}{N}\beta-X\beta -\frac{N_1g_1+N_2g_2}{N}) =0
     \\  \Leftrightarrow X^T(X-\mathbf{1}\hat\mu^T)\beta = X^Ty-X^T\mathbf{1}\bar g
-    
     \\ \Leftrightarrow (X^TX-N\hat \mu\hat\mu^T)\beta = \sum_{i=1}^{N_1}x_{1_i}(g_1-\frac{N_1g_1+N_2g_2}{N})+\sum_{i=1}^{N_1}x_{2_i}(g_2-\frac{N_1g_1+N_2g_2}{N})
     \\ \Leftrightarrow (X^TX-N\hat \mu\hat\mu^T)\beta = \sum_{i=1}^{N_1}x_{1_i}\frac{N_2}{N}(g_1-g_2)+\sum_{i=1}^{N_1}x_{2_i}\frac{N_1}{N}(g_2-g_1)
     \\ \Leftrightarrow (X^TX-N\hat \mu\hat\mu^T)\beta = \frac{\sum_{i=1}^{N_1}x_{1_i}}{N_1}\frac{N_1N_2}{N}(g_1-g_2)+\frac{\sum_{i=1}^{N_1}x_{2_i}}{N_2}\frac{N_1N_2}{N}(g_2-g_1)
@@ -165,7 +163,6 @@
       1-\frac{c}{4}
       \\=1 -\frac{\frac{N}{4}(\hat\mu_2-\hat\mu_1)^T{\hat\Sigma}^{-1}(\hat\mu_2-\hat\mu_1)}{N-2+\frac{N}{4}(\hat\mu_2-\hat\mu_1)^T{\hat\Sigma}^{-1}(\hat\mu_2-\hat\mu_1)} >0
       \\=\frac{N-2}{N-2+\frac{N}{4}(\hat\mu_2-\hat\mu_1)^T{\hat\Sigma}^{-1}(\hat\mu_2-\hat\mu_1)}
-      
       \\ \frac{(1-\frac{c}{4})N}{N-2} =\frac{N}{N-2+\frac{N}{4}(\hat\mu_2-\hat\mu_1)^T{\hat\Sigma}^{-1}(\hat\mu_2-\hat\mu_1)} >0
       $$
 
