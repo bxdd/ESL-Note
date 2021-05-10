@@ -1,4 +1,4 @@
-[![Documentation Status](https://readthedocs.org/projects/esl-note/badge/?version=latest)](https://esl-note.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/esl-note/badge/?version=latest)](https://esl-note.readthedocs.io/zh/latest/?badge=latest)
 
 # ESL-Note
 
